@@ -4,7 +4,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
-  test "" do 
+  test "does not save invalid users" do 
   	#get call not necessary, but does check that the path exists
   	get signup_path
   	assert_no_difference 'User.count' do
