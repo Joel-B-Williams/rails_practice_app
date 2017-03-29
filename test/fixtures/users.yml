@@ -8,3 +8,9 @@
 #   name: MyString
 #   email: MyString
 # # 
+
+#no password column in DB so have to hardcode that value in test file
+cat:
+  name: Levon
+  email: meow@mail.com
+  password_digest: <%= User.digest('password') %>
