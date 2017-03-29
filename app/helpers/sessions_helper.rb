@@ -10,7 +10,7 @@ module SessionsHelper
 	
 	def logged_in?
 		session[:user_id]
-		# !current_user.nil?
+		# !current_user.nil? <- por que no?
 	end
 
 	def log_out
