@@ -9,7 +9,11 @@ module SessionsHelper
 	end
 	
 	def logged_in?
-		current_user
+		session[:user_id]
+	end
+
+	def log_out
+		session[:user_id] = nil
 	end
 
 end
