@@ -30,6 +30,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 		end
 		follow_redirect!
 		assert_template 'users/show'
+    assert is_logged_in?
 		assert_select 'div.alert'
 		#testing actual text is brittle = test for non-empty div
 		assert_not flash.empty?
