@@ -20,15 +20,24 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   	assert flash.empty?
   end
 
-  test "appropriate links are shown" do 
+  test "Valid log in and log out" do 
     get login_path
     #password hardcoded here because there's no password column in DB so rails would freak if it was in yml file
     post login_path, params: { session: { email: @user.email, password: 'password' }}
+    assert is_logged_in?
     assert_redirected_to @user
     follow_redirect!
     assert_template 'users/show'
     assert_select "a[href=?]", login_path, count: 0
     assert_select "a[href=?]", logout_path 
     assert_select "a[href=?]", user_path(@user) 
+    delete logout_path
+    assert_not is_logged_in?
+    assert_redirected_to root_url
+    follow_redirect!
+    assert_template 'static_pages/home'
+    assert_select "a[href=?]", login_path
+    assert_select "a[href=?]", logout_path, count: 0
+    assert_select "a[href=?]", users_path(@user), count: 0
   end
 end
