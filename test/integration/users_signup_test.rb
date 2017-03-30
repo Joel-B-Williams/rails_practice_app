@@ -8,7 +8,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   	#get call not necessary, but does check that the path exists
   	get signup_path
   	assert_no_difference 'User.count' do
-  		post users_path, params: { user: { name:  "",
+  		post users_path, params: { user: { name: "",
                                      email: "user@invalid",
                                      password:              "foo",
                                      password_confirmation: "bar" } }

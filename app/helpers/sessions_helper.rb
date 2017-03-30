@@ -9,7 +9,7 @@ module SessionsHelper
 		# @current_user ||= User.find_by(id: session[:user])
 
 		# first check temp session
-		if (user_id = session[:user_id)] 
+		if (user_id = session[:user_id]) 
 			@current_user ||= User.find_by(id: user_id)
 			# then check for cookie with encrypted user ID
 		elsif (user_id = cookies.signed[:user_id])
@@ -19,6 +19,7 @@ module SessionsHelper
 			if user && user.authenticated?(cookies[:remember_token])
 				log_in user
 				@current_user = user
+			end
 		end	
 	end
 	
@@ -28,6 +29,7 @@ module SessionsHelper
 	end
 
 	def log_out
+		forget(current_user)
 		# session[:user_id] = nil
 		session.delete(:user_id)
 		@current_user = nil
@@ -40,5 +42,15 @@ module SessionsHelper
 		cookies.permanent.signed[:user_id] = user.id
 		# store remember token of user in cookie (not hashed because authenticate method does that for us)
 		cookies.permanent[:remember_token] = user.remember_token
+	end
+
+	# to remove persisted cookie
+	def forget(user)
+		# call instance method forget to set DB hash-string to nil
+		user.forget
+		# delete relevant values from cookie
+		cookies.delete(:user_id)
+		cookies.delete(:remember_token)
+		# now call in log_out 
 	end
 end

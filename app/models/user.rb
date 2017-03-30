@@ -14,13 +14,13 @@ class User < ApplicationRecord
     # Returns the hash digest of the given string.
     # for use in testing -> building fixture
     # class method because no access to instance in users.yml
-    def self.digest(string)
+    def digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                     BCrypt::Engine.cost
       BCrypt::Password.create(string, cost: cost)
     end
     # creates random 22-char string, will be using for access token key -> will be encrypted similarly to password digest
-    def self.new_token
+    def new_token
       SecureRandom.urlsafe_base64
     end
 
@@ -33,6 +33,12 @@ class User < ApplicationRecord
     # DB col becomes hashed version of that string (similar to password)
     # Note skipping validations with update_attr is good because we don't have the instance's password/confirmation to verify
     update_attribute(:remember_digest, User.digest(remember_token))
+  end
+
+  # method to forget a user so you can once more log out instead of being forced to stay for 20 years.  Womp.
+  # set DB hash-string to nil
+  def forget
+    update_attribute(:remember_digest, nil)
   end
 
 # Remember back to writing BCrypt password authentication -> this is doing the same with the hashed remember_token (cookie).  Reinflate the string held in DB, use re-written == to hash the virtual remember_token and compare the two.
