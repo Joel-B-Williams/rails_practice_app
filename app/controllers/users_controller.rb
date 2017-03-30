@@ -4,12 +4,13 @@ class UsersController < ApplicationController
   end
 
   def create
-  	@user = User.new(user_params)
-  	if @user.save
+  	user =User.new(user_params)
+  	if user.save
   		#displays only on the next page after success
-      log_in @user
+      log_in user
+      remember user
   		flash[:success] = "Welcome to the Sample App!"
-  		redirect_to @user
+  		redirect_to user
   	else
   		render 'new'
   	end
