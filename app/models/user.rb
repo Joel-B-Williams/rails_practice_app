@@ -9,22 +9,25 @@ class User < ApplicationRecord
 	has_secure_password
 	validates :password, presence: true, length: {minimum: 6}
 
+  # blanket class methods inside this chunk
+  class << self
+    # Returns the hash digest of the given string.
+    # for use in testing -> building fixture
+    # class method because no access to instance in users.yml
+    def self.digest(string)
+      cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                    BCrypt::Engine.cost
+      BCrypt::Password.create(string, cost: cost)
+    end
+    # creates random 22-char string, will be using for access token key -> will be encrypted similarly to password digest
+    def self.new_token
+      SecureRandom.urlsafe_base64
+    end
 
-  # Returns the hash digest of the given string.
-  # for use in testing -> building fixture
-  # class method because no access to instance in users.yml
-  def User.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                                                  BCrypt::Engine.cost
-    BCrypt::Password.create(string, cost: cost)
-  end
-  # creates random 22-char string, will be using for access token key -> will be encrypted similarly to password digest
-  def User.new_token
-    SecureRandom.urlsafe_base64
   end
 
 # method to associate a 'remember token' with user and store it in DB
-  def User.remember
+  def remember
     # virtual attribute becomes a random string
     self.remember_token = User.new_token
     # DB col becomes hashed version of that string (similar to password)
