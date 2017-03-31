@@ -53,6 +53,7 @@ class UsersController < ApplicationController
     end
 
     def correct_user
+      #bleh current_user = method not variable, can't call .id on it duh.  Go face.
       # unless current_user.id == params[:id]
       #   redirect_to root_path
       # end
