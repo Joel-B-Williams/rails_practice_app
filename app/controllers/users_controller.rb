@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def create
-  	user =User.new(user_params)
+  	user = User.new(user_params)
   	if user.save
   		#displays only on the next page after success
       log_in user
@@ -22,6 +22,15 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find_by(id: params[:id])
+  end
+
+  def update
+    @user = User.find_by(id: params[:id])
+    if @user.update_attributes(user_params)
+      #update user
+    else
+      render 'edit'
+    end
   end
 
   private

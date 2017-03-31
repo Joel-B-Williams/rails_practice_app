@@ -9,6 +9,7 @@
     <div class='gravatar-edit'>
       <%= gravatar_for @user%>
       <!-- target='_blank' opens link in new tab -->
+      <!-- rel='noopener' keeps opened site from having access to window -->
       <a href="http://gravatar.com/emails" rel='noopener' target="_blank">Change</a>
     </div>
   </div>
