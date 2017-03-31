@@ -22,6 +22,11 @@ module SessionsHelper
 			end
 		end	
 	end
+
+# convention to make a boolean check of method
+	def current_user?(user)
+		user == current_user
+	end
 	
 	def logged_in?
 		session[:user_id]
