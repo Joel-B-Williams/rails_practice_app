@@ -16,7 +16,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    log_out
+    # only log out if logged in in case multiple windows in use
+    log_out if logged_in?
     redirect_to root_path
   end
 
