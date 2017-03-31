@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   # check before routing to edit/update actions logged_in_user method (below)
-  before_action :logged_in_user, only: [:edit, :update]
+  before_action :logged_in_user, only: [:edit, :update, :index]
   before_action :correct_user, only: [:edit, :update]
 
   def new
@@ -37,6 +37,11 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+
+  def index
+    @users = User.all
   end
 
   private
