@@ -58,4 +58,15 @@ module SessionsHelper
 		cookies.delete(:remember_token)
 		# now call in log_out 
 	end
+
+# these two methods will allow us to use friendly forwarding
+	def store_location
+		# will only store get requests -> .o_u = built in to request.  Fun.
+		session[:forwarding_url] = request.original_url if request.get?
+	end
+
+	def redirect_back_or(default)
+		redirect_to(session[:forwarding_url] || default)
+		session.delete(:forwarding_url)
+	end
 end
