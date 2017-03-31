@@ -44,6 +44,7 @@ class User < ApplicationRecord
 # Remember back to writing BCrypt password authentication -> this is doing the same with the hashed remember_token (cookie).  Reinflate the string held in DB, use re-written == to hash the virtual remember_token and compare the two.
 # Same process, same reason - keeps cookie encrypted so even if it gets stolen the damage potential is minimalized.
   def authenticated?(remember_token)
+    return false if remember_digest.nil?
     BCrypt::Password.new(remember_digest) == remember_token
   end
 end
