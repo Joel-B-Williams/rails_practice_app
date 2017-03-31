@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   # check before routing to edit/update actions logged_in_user method (below)
   before_action :logged_in_user, only: [:edit, :update]
+  before_action :correct_user, only: [:edit, :update]
 
   def new
   	@user = User.new
@@ -50,6 +51,15 @@ class UsersController < ApplicationController
         redirect_to login_path
       end
     end
+
+    def correct_user
+      # unless current_user.id == params[:id]
+      #   redirect_to root_path
+      # end
+      @user = User.find_by(id: params[:id])
+      redirect_to(root_path) unless @user == current_user
+    end
+
 end
 
 
