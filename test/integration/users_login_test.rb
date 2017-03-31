@@ -42,4 +42,23 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", logout_path, count: 0
     assert_select "a[href=?]", users_path(@user), count: 0
   end
+
+  test "login with remembering" do 
+    # use helper method to log in 
+    log_in_as(@user)
+    # check cookie to make sure it's not empty - aka the remember token is stored there
+    # note this is one of those weird hashes that doesn't take symbols
+    assert_not_empty cookies['remember_token']
+  end
+
+  test "login without remembering" do 
+    # tried this first but cookie is not set unless you are remembered first so got nil class error.  Womp.
+    # log_in_as(@user, remember_me: '0')
+    # assert_empty cookies['remember_token']
+    log_in_as(@user)
+    assert_not_empty cookies['remember_token']
+    log_in_as(@user, remember_me: '0')
+    assert_empty cookies['remember_token']
+  end
+
 end
