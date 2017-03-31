@@ -49,6 +49,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     # check cookie to make sure it's not empty - aka the remember token is stored there
     # note this is one of those weird hashes that doesn't take symbols
     assert_not_empty cookies['remember_token']
+    # now that session#create has instance variable we can look at it's virtual attributes with assigns and make sure they directly match the cookie
+    assert_equal cookies['remember_token'], assigns(:user).remember_token
   end
 
   test "login without remembering" do 
