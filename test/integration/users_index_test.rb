@@ -16,9 +16,9 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
   	assert_select 'div.pagination'
   	User.paginate(page: 1).each do |user|
   		assert_select 'a[href=?]', user_path(user), text: user.name
+      assert user.activated?
   	end
   end
-
 
   test "should redirect destroy when not logged in" do 
     assert_no_difference 'User.count' do 
