@@ -1,6 +1,10 @@
 <% provide(:title, "All users")%>
 <h1>All Users</h1>
 
+<!-- automatically looks for an @users variable (based on users controller) -->
+<!-- Has a built-in prev/next/numbers, which is why it goes before and after -->
+<%= will_paginate %>
+
 <ul class='users'>
 	<% @users.each do |user| %>
 		<li>
@@ -9,3 +13,5 @@
 		</li>
 	<% end %>
 </ul>
+
+<%= will_paginate %>
