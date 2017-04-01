@@ -1,5 +1,5 @@
 Hi <%= @user.name %>,
 
 Welcome to the Sample App!  Click on the link below to activate your account:
-<!-- this will use the activation token instead of id, plus throw in email as a query param into address -->
+
 <%= edit_account_activation_url(@user.activation_token, email: @user.email) %>
