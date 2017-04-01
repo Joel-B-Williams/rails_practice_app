@@ -2,6 +2,7 @@
 
 <p>Hi <%= @user.name %>,</p>
 
-<pWelcome to the Sample App!  Click on the link below to activate your account:</p>
+<p>Welcome to the Sample App!  Click on the link below to activate your account:</p>
 <!-- this will use the activation token instead of id, plus throw in email as a query param into address -->
-<%= link_to "Activate", edit_account_activation_path(@user.activation_token, email: @user.email) %>
+<!-- note use of URL instead of PATH here - which generates the *full* url instead of a relative path => necessary since it's coming from external source -->
+<%= link_to "Activate", edit_account_activation_url(@user.activation_token, email: @user.email) %>
