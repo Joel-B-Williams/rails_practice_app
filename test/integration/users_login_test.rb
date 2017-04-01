@@ -63,4 +63,11 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_empty cookies['remember_token']
   end
 
+  test "redirects login if not activated" do 
+    @user.toggle!(:activated)
+    log_in_as(@user)
+    assert_redirected_to root_path
+    assert_not flash.empty?
+  end
+
 end
