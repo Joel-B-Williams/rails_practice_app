@@ -15,8 +15,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 		end
 		assert_template 'users/new'
 		assert_select 'div#error_explanation'
-    assert_select 'div.alert'
-    assert_select 'form[action="/signup"]'
+    # assert_select 'div.alert'
+    # assert_select 'form[action="/signup"]'
+    assert_select 'div.field_with_errors'
   end
 
   test "saves valid users" do 
@@ -28,11 +29,15 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
                                      password:              "foobar",
                                      password_confirmation: "foobar" } }
 		end
-		follow_redirect!
-		assert_template 'users/show'
-    assert is_logged_in?
-		assert_select 'div.alert'
-		#testing actual text is brittle = test for non-empty div
-		assert_not flash.empty?
+		# follow_redirect!
+		# assert_template 'users/show'
+  #   assert is_logged_in?
+		# assert_select 'div.alert'
+		# #testing actual text is brittle = test for non-empty div
+		# assert_not flash.empty?
+    assert_not flash.empty?
+    assert_redirected_to root_path
+    follow_redirect!
+    assert_template 'static_pages/home'
   end
 end
