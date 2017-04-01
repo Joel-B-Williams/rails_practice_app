@@ -1,8 +1,9 @@
 class User < ApplicationRecord
   #create an accessible token 
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :activation_token
 
-	before_save { email.downcase! }
+  before_create :create_activation_digest
+	before_save :downcase_email
 	validates :name, presence: true, length: {maximum: 50}
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, presence: true, length: {maximum: 255}, format: {with: VALID_EMAIL_REGEX}, uniqueness: {case_sensitive: false}
@@ -48,4 +49,17 @@ class User < ApplicationRecord
     return false if remember_digest.nil?
     BCrypt::Password.new(remember_digest) == remember_token
   end
+
+  private
+
+    def create_activation_digest
+      # called on a User.new object, these attributes are written into it and then saved into DB
+      self.activation_token = User.new_token
+      self.activation_digest = User.digest(activation_token)
+    end
+
+    def downcase_email
+      self.email = email.downcase
+    end
+
 end
