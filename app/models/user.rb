@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   #create an accessible token 
-  attr_accessor :remember_token, :activation_token
+  attr_accessor :remember_token, :activation_token, :reset_token
 
   before_create :create_activation_digest
 	before_save :downcase_email
