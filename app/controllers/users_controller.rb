@@ -13,7 +13,8 @@ class UsersController < ApplicationController
   	@user = User.new(user_params)
   	if @user.save
       # send activation immediately to user's address
-      UserMailer.account_activation(@user).deliver_now
+      @user.send_activation_email
+      # UserMailer.account_activation(@user).deliver_now
   		flash[:info] = "Please check your email to activate your account"
       redirect_to root_path
       #displays only on the next page after success
