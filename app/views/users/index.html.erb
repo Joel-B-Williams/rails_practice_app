@@ -6,12 +6,8 @@
 <%= will_paginate %>
 
 <ul class='users'>
-	<% @users.each do |user| %>
-		<li>
-			<%= gravatar_for user, size: 50 %>
-			<%= link_to user.name, user %>
-		</li>
-	<% end %>
+	<%= render @users %>
 </ul>
-
+<!-- yeah, you can do that.  Rails looks at the @users variable, sees it's a bunch of users, and puts them all through the _user partial in turn -->
 <%= will_paginate %>
+
