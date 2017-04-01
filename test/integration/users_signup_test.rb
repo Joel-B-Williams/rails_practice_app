@@ -4,6 +4,11 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
+
+  def setup
+    ActionMailer::Base.deliveries.clear
+  end
+
   test "does not save invalid users" do 
   	#get call not necessary, but does check that the path exists
   	get signup_path
@@ -35,9 +40,29 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 		# assert_select 'div.alert'
 		# #testing actual text is brittle = test for non-empty div
 		# assert_not flash.empty?
-    assert_not flash.empty?
-    assert_redirected_to root_path
+
+    # assert one email delivery has been sent
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    # assign user to instance variable @user within controller
+    user = assigns(:user)
+    assert_not user.activated?
+    log_in_as(user)
+    assert_not is_logged_in?
+    # check invalid token
+    get edit_account_activation_path('invalid token', email: user.email)
+    assert_not is_logged_in?
+    # check invalid email
+    get edit_account_activation_path(user.activation_token, email: 'invalid@invalid')
+    assert_not is_logged_in?
+    # check valid token/email
+    get edit_account_activation_path(user.activation_token, email: user.email)
+    assert user.reload.activated?
     follow_redirect!
-    assert_template 'static_pages/home'
+    assert_template 'users/show'
+    assert is_logged_in?
+    # assert_not flash.empty?
+    # assert_redirected_to root_path
+    # follow_redirect!
+    # assert_template 'static_pages/home'
   end
 end
