@@ -16,7 +16,7 @@ module SessionsHelper
 			# find user by id from cookie
 			user = User.find_by(id: user_id)
 			# if found and authenticated by encrypted remember token, then...
-			if user && user.authenticated?(cookies[:remember_token])
+			if user && user.authenticated?(:remember, cookies[:remember_token])
 				log_in user
 				@current_user = user
 			end
