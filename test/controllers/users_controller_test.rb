@@ -59,4 +59,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
+  test "admins can activate orbital railguns" do 
+    log_in_as(@user)
+    assert_difference 'User.count', -1 do 
+      delete user_path(@other_user)
+    end
+  end
+
 end
