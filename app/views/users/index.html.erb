@@ -8,10 +8,6 @@
 <ul class='users'>
 	<%= render @users %>
 <!-- yeah, you can do that.  Rails looks at the @users variable, sees it's a bunch of users, and puts them all through the _user partial in turn -->
-	<% if current_user.admin? && !current_user?(user) %>
-		<%= link_to 'Activate Orbital Railguns', user, method: :delete, data: { confirm: "Fire?" }%>
-	<% end %>
-	<!-- still have to fake the delete method -->
 </ul>
 <%= will_paginate %>
 

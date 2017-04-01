@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   # check before routing to edit/update actions logged_in_user method (below)
-  before_action :logged_in_user, only: [:edit, :update, :index]
+  before_action :logged_in_user, only: [:edit, :update, :index, :destroy]
   before_action :correct_user, only: [:edit, :update]
+  # link is only shown in view if admin, but what about netcat?  Check if admin is actively logged in before you can destroy
+  before_action :admin_user, only: [:destroy]
 
   def new
   	@user = User.new
@@ -46,7 +48,9 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    
+    User.find_by(id: params[:id]).destroy
+    flash[:success] = "Target neutralized."
+    redirect_to users_path
   end
 
   private
@@ -72,6 +76,9 @@ class UsersController < ApplicationController
       redirect_to(root_path) unless current_user?(@user) #@user == current_user
     end
 
+    def admin_user
+      redirect_to root_path unless current_user.admin?
+    end
 end
 
 
